@@ -75,8 +75,30 @@ namespace la_mia_pizzeria_static.Controllers.API
             {
                 return BadRequest(ex.Message);
             }
-            
-            
+
+        }
+
+        [HttpPut ("{id}")]
+
+        public IActionResult ModificaPizza (int id, [FromBody] Pizza pizzaAggiornata)
+        {
+            Pizza? pizzaModificata = _myDb.Pizze.Where(pizza => pizza.Id == id).FirstOrDefault();
+
+            if(pizzaModificata == null)
+            {
+                return NotFound();
+            }
+
+            pizzaModificata.Name = pizzaAggiornata.Name;
+            pizzaModificata.Description = pizzaAggiornata.Description;
+            pizzaModificata.Pathimg = pizzaAggiornata.Pathimg;
+            pizzaModificata.Price = pizzaAggiornata.Price;
+            pizzaModificata.Categoria = pizzaAggiornata.Categoria;
+            pizzaModificata.Gusti = pizzaAggiornata.Gusti;
+
+            _myDb.SaveChanges();
+
+            return Ok();
         }
 
     }
