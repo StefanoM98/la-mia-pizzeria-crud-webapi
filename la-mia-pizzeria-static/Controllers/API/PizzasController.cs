@@ -1,11 +1,7 @@
 ﻿using la_mia_pizzeria_static.Database;
 using la_mia_pizzeria_static.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol;
-using System.Linq;
-using System.Runtime.ConstrainedExecution;
 
 namespace la_mia_pizzeria_static.Controllers.API
 {
@@ -14,51 +10,73 @@ namespace la_mia_pizzeria_static.Controllers.API
     public class PizzasController : ControllerBase
     {
 
+        private PizzaContext _myDb;
+
+        public PizzasController(PizzaContext myDb)
+        {
+            _myDb = myDb;
+        }
 
         [HttpGet]
         public IActionResult GetPizze()
         {
-            using (PizzaContext db = new PizzaContext())
-            {
-                List<Pizza> pizze = db.Pizze.Include(pizza => pizza.Gusti).ToList();
 
-                return Ok(pizze);
-            }
+            List<Pizza> pizze = _myDb.Pizze.Include(pizza => pizza.Gusti).ToList();
+
+            return Ok(pizze);
+
         }
 
 
         [HttpGet]
-        public IActionResult SearchPizze(string? cerca)
+        public IActionResult RicercaPizze(string? cerca)
         {
             if (cerca == null)
             {
                 return BadRequest(new { Message = "Manca la stringa per la ricerca" });
             }
 
-            using (PizzaContext db = new PizzaContext())
-            {
-                List<Pizza> pizzeTrovate = db.Pizze.Where(pizza=> pizza.Name.ToLower().Contains(cerca.ToLower())).ToList();
 
-                return Ok(pizzeTrovate);
-            }
+            List<Pizza> pizzeTrovate = _myDb.Pizze.Where(pizza => pizza.Name.ToLower().Contains(cerca.ToLower())).ToList();
+
+            return Ok(pizzeTrovate);
+
         }
 
         [HttpGet]
-        public IActionResult RicercaId(int id) 
+        public IActionResult RicercaId(int id)
         {
-            using (PizzaContext db = new PizzaContext())
+
+            Pizza? pizza = _myDb.Pizze.Where(pizza => pizza.Id == id).Include(pizza => pizza.Gusti).FirstOrDefault();
+
+            if (pizza != null)
             {
-                Pizza? pizza = db.Pizze.Where(pizza=> pizza.Id == id).Include(pizza=> pizza.Gusti).FirstOrDefault();
-
-                if (pizza != null)
-                {
-                    return Ok(pizza);
-                } else
-                {
-                    return NotFound();  
-                }
-
+                return Ok(pizza);
             }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+
+        public IActionResult CreaPizza([FromBody] Pizza nuovaPizza)
+        {
+            try
+            {
+                _myDb.Pizze.Add(nuovaPizza);
+
+                _myDb.SaveChanges();
+
+                return Ok();
+            }
+            catch (Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
+            
+            
         }
 
     }
