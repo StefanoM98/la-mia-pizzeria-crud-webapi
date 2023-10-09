@@ -23,6 +23,21 @@ namespace la_mia_pizzeria_static.Controllers.API
                 return Ok(pizze);
             }
         }
+        
+        public IActionResult SearchPizze(string? cerca)
+        {
+            if (cerca == null)
+            {
+                return BadRequest(new { Message = "Manca la stringa per la ricerca" });
+            }
+
+            using (PizzaContext db = new PizzaContext())
+            {
+                List<Pizza> pizzeTrovate = db.Pizze.Where(pizza=> pizza.Name.ToLower().Contains(cerca.ToLower())).ToList();
+
+                return Ok(pizzeTrovate);
+            }
+        }
 
     }
 }
