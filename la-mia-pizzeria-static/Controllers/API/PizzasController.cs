@@ -101,5 +101,20 @@ namespace la_mia_pizzeria_static.Controllers.API
             return Ok();
         }
 
+        [HttpDelete ("{id}")]
+
+        public IActionResult CancellaPizza(int id)
+        {
+            Pizza pizzaCancellata = _myDb.Pizze.Where(pizza => pizza.Id == id).FirstOrDefault();
+            
+            if (pizzaCancellata == null) {  return NotFound(); }
+
+            _myDb.Pizze.Remove(pizzaCancellata);
+
+            _myDb.SaveChanges();
+
+            return Ok();
+        }
+
     }
 }
