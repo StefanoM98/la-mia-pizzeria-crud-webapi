@@ -1,0 +1,50 @@
+﻿@model Pizza
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex align-items-center">
+                <h1 class="mt-3 mb-3">Dettagli della pizza</h1>
+            </div>
+            <div class="post-single-image-container">
+                <img src="@Model.Pathimg">
+            </div>
+            <p>
+                <strong>Titolo:</strong>
+                @Model.Name
+            </p>
+            <p>
+                <strong>Categoria:</strong>
+                @if(Model.Categoria != null)
+                {
+                    <span>@Model.Categoria.Name</span>
+                } else
+                {
+                    <span>Nessuna categoria associata</span>
+                }
+            </p>
+            <p>
+                <strong>
+                    Gusti:
+                </strong>
+                @if(Model.Gusti != null && Model.Gusti.Count > 0)
+                {
+                    <ul>
+                        @foreach(Gusto gusti in Model.Gusti)
+                        {
+                            <li>@gusti.Name</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <span>Non hai associato alcun gusto a questa pizza!</span>
+                }
+            </p>
+            <p>
+                <strong>Contenuto:</strong>
+                @Model.Description
+            </p>
+        </div>
+    </div>
+</div>
