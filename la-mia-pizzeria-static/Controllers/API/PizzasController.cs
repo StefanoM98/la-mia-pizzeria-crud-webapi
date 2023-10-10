@@ -29,7 +29,7 @@ namespace la_mia_pizzeria_static.Controllers.API
 
 
         [HttpGet]
-        public IActionResult RicercaPizze(string? cerca)
+        public IActionResult RicercaPizze(string cerca)
         {
             List<Pizza> pizzeTrovate = _myDb.Pizze.Where(pizza => pizza.Name.ToLower().Contains(cerca.ToLower())).ToList();
             if (cerca == null)

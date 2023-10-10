@@ -49,15 +49,28 @@ function GetPizze() {
                             <td class="price">
                                 ${pizza.price}
                             </td>
+                            <td>
+                                <button type="button" class="btn btn-danger delete-btn" id="${pizza.id}">
+                                CANCELLA
+                                </button>
+                            </td>
                         </tr>
                     `
             })
-
+            let btnDelete = document.querySelectorAll(".delete-btn")
+            for (var i = 0; i < btnDelete.length; i++) {
+                console.log('cancellato')
+                let id = btnDelete[i].id;
+                btnDelete[i].addEventListener('click', function () {
+                    deletePizza(id)
+                })
+            }
         }
     })
-        .catch((resp) => {
-            alert(resp)
-        })
+
+    
+   
+
 }
 
 
@@ -107,6 +120,16 @@ function loadPizze(searchKey) {
             alert(resp)
         })
 }
+
+
+function deletePizza(pizzaId) {
+    axios.delete('https://localhost:7087/api/Pizzas/CancellaPizza/' + pizzaId)
+        .then(resp => {
+            console.log(pizzaId)
+            GetPizze();
+        });
+}
+
 
 
 
