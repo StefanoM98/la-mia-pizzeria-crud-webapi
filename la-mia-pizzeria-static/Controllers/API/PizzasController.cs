@@ -31,13 +31,13 @@ namespace la_mia_pizzeria_static.Controllers.API
         [HttpGet]
         public IActionResult RicercaPizze(string? cerca)
         {
+            List<Pizza> pizzeTrovate = _myDb.Pizze.Where(pizza => pizza.Name.ToLower().Contains(cerca.ToLower())).ToList();
             if (cerca == null)
             {
                 return BadRequest(new { Message = "Manca la stringa per la ricerca" });
             }
 
 
-            List<Pizza> pizzeTrovate = _myDb.Pizze.Where(pizza => pizza.Name.ToLower().Contains(cerca.ToLower())).ToList();
 
             return Ok(pizzeTrovate);
 
