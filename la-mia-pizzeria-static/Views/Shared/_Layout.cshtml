@@ -6,7 +6,6 @@
     <title>@ViewData["Title"] - la_mia_pizzeria_static</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/la_mia_pizzeria_static.styles.css" asp-append-version="true" />
 </head>
 <body class="m-0">
     @Html.Partial("Admin/Header")
@@ -20,6 +19,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
